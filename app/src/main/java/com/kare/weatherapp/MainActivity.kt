@@ -12,7 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -50,7 +51,7 @@ fun WeatherApp() {
     var location by remember { mutableStateOf("") }
 
     // Call the OpenWeather API when the button is clicked
-    var weatherDetails by remember { mutableStateOf<WeatherDetails?>(null) }
+    val weatherDetails by remember { mutableStateOf<WeatherDetails?>(null) }
 
     // UI components
     Column(
@@ -90,11 +91,13 @@ fun WeatherApp() {
 
         // Display weather details in a card
         weatherDetails?.let { weather ->
-            Card(
+            ElevatedCard(
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 8.dp
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                elevation = 8.dp
+                    .padding(16.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -103,7 +106,6 @@ fun WeatherApp() {
                 ) {
                     Text("Location: ${weather.location}")
                     Text("Temperature: ${weather.temperature} °C")
-                    // Add more details as needed
                 }
             }
         }
