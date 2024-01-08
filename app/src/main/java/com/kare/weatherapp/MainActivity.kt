@@ -1,7 +1,6 @@
 package com.kare.weatherapp
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -19,11 +18,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -84,11 +81,9 @@ fun WeatherApp(viewModel: WeatherViewModel) {
                         location,
                         onWeatherDetails = { details ->
                             weatherDetails = details
-                            Toast.makeText(context, "Location: ${details.location} Temperature: ${details.temperature}" , Toast.LENGTH_SHORT).show()
                         },
                         onError = { errorMsg ->
                             error = errorMsg
-                            Toast.makeText(context, "Error: $errorMsg" , Toast.LENGTH_SHORT).show()
                         }
                     )
                 }
@@ -133,8 +128,8 @@ fun WeatherApp(viewModel: WeatherViewModel) {
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    Text("Location: ${weather.location}")
-                    Text("Temperature: ${weather.temperature} °C")
+                    Text("Location: ${weather.name}")
+                    Text("Temperature: ${weather.main?.temp} °C")
                 }
             }
         } ?: error?.let { errorMsg ->

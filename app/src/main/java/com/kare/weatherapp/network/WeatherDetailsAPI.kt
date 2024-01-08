@@ -13,7 +13,7 @@ fun fetchWeatherDetails(location: String): WeatherDetails {
 
     // We make a request to the API to get the weather data
     val request = Request.Builder()
-        .url("$baseUrl?q=$location&appid=$apiKey")
+        .url("$baseUrl?q=$location&appid=$apiKey&units=metric")
         .build()
 
     val response = client.newCall(request).execute()
