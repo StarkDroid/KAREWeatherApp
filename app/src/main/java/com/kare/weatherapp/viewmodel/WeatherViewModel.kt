@@ -15,6 +15,9 @@ class WeatherViewModel : ViewModel() {
     private val _weatherDetails = MutableLiveData<WeatherDetails>()
     val weatherDetails: LiveData<WeatherDetails> = _weatherDetails
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://api.openweathermap.org/data/2.5/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -23,6 +26,7 @@ class WeatherViewModel : ViewModel() {
     private val weatherApiService = retrofit.create(WeatherApiService::class.java)
 
     suspend fun getWeatherDetails(location: String) {
+        _isLoading.value = true
             try {
                 val apiKey = "9ba82bf7644896ddbe0678eccc64089f"
                 val response = withContext(Dispatchers.IO) {
@@ -31,6 +35,12 @@ class WeatherViewModel : ViewModel() {
                 _weatherDetails.value = response
             } catch (e: Exception) {
                 println("Exception: $e")
+            } finally {
+                _isLoading.value = false
             }
+    }
+
+    fun resetLoadingState() {
+        _isLoading.value = false
     }
 }
