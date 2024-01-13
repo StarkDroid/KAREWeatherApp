@@ -1,16 +1,21 @@
 package com.kare.weatherapp.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kare.weatherapp.R
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(onSearch: (String) -> Unit, onInputError: () -> Unit) {
     var inputText by remember { mutableStateOf("") }
@@ -35,44 +40,68 @@ fun SearchBar(onSearch: (String) -> Unit, onInputError: () -> Unit) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Row(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(16.dp),
+        shape = RoundedCornerShape(20.dp),
+        shadowElevation = 12.dp
     ) {
-        TextField(
-            value = inputText,
-            onValueChange = {
-                inputText = it
-                isInputError = false
-            },
-            label = {
-                Text(text = stringResource(id = R.string.search_hint))
-            },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Search,
-            ),
-            keyboardActions = KeyboardActions(
-                onSearch = {
-                    if (inputText.isNotBlank()) {
-                        onSearch(inputText)
-                        keyboardController?.hide()
-                    } else {
-                        isInputError = true
-                        onInputError()
-                    }
-                }
-            ),
-            isError = isInputError,
-            trailingIcon = {
-                Icon(imageVector = Icons.Default.Search, contentDescription = null)
-            },
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(16.dp)
+                ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = inputText,
+                onValueChange = {
+                    inputText = it
+                    isInputError = false
+                },
+                label = {
+                    Text(text = stringResource(id = R.string.search_hint))
+                },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Search,
+                ),
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        if (inputText.isNotBlank()) {
+                            onSearch(inputText)
+                            keyboardController?.hide()
+                        } else {
+                            isInputError = true
+                            onInputError()
+                        }
+                    }
+                ),
+                isError = isInputError,
+                trailingIcon = {
+                    Icon(imageVector = Icons.Default.Search, contentDescription = null)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    errorContainerColor = Color.Red.copy(0.1f),
+                    errorIndicatorColor = Color.Transparent,
+                    errorLabelColor = Color.Red,
+                    focusedLabelColor = Color.Black,
+                    unfocusedLabelColor = Color.Black,
+                    errorTrailingIconColor = Color.Red,
+                    focusedTrailingIconColor = Color.Black,
+                    unfocusedTrailingIconColor = Color.Black,
+                    errorCursorColor = Color.Red,
+                    cursorColor = Color.Black,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                )
+            )
+        }
     }
 
     if (isInputError) {
