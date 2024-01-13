@@ -72,19 +72,13 @@ fun WeatherApp(viewModel: WeatherViewModel) {
             .padding(16.dp)
     ) {
         SearchBar(
-            onSearch = { inputLocationName ->
-                locationName = inputLocationName
-            }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        LaunchedEffect(locationName) {
-            if (locationName.isNotBlank()) {
+            onSearch = { locationName ->
                 viewModel.viewModelScope.launch {
                     viewModel.getWeatherDetails(locationName)
                 }
             }
-        }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
 
         if (weatherDetails != null) {
             WeatherCard(weatherDetails = weatherDetails)
