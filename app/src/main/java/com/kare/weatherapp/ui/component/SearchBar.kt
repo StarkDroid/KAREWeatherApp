@@ -1,5 +1,6 @@
 package com.kare.weatherapp.ui.component
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -7,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -14,42 +16,80 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kare.weatherapp.R
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchBar(onSearch: (String) -> Unit) {
-    var locationName by remember { mutableStateOf("") }
+fun SearchBar(onSearch: (String) -> Unit, onInputError: () -> Unit) {
+    var inputText by remember { mutableStateOf("") }
+    var isInputError by remember { mutableStateOf(false) }
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    TextField(
-        value = locationName,
-        onValueChange = {
-            locationName = it
-        },
-        label = {
-            Text(text = stringResource(id = R.string.search_hint))
-        },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Search
-        ),
-        keyboardActions = KeyboardActions(
-            onSearch = {
-                onSearch(locationName)
-                keyboardController?.hide()
-            }
-        ),
-        leadingIcon = {
-            Icon(imageVector = Icons.Default.Search, contentDescription = null)
-        },
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextField(
+            value = inputText,
+            onValueChange = {
+                inputText = it
+                isInputError = false
+            },
+            label = {
+                Text(text = stringResource(id = R.string.search_hint))
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search,
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    if (inputText.isNotBlank()) {
+                        onSearch(inputText)
+                        keyboardController?.hide()
+                    } else {
+                        isInputError = true
+                        onInputError()
+                    }
+                }
+            ),
+            isError = isInputError,
+            trailingIcon = {
+                Icon(imageVector = Icons.Default.Search, contentDescription = null)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        )
+    }
+
+    if (isInputError) {
+        Text(
+            text = stringResource(id = R.string.no_input_found),
+            color = Color.Red,
+            modifier = Modifier.padding(start = 26.dp),
+            style = MaterialTheme.typography.labelSmall
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun SearchBarPreview() {
+    SearchBar(
+        onSearch = { },
+        onInputError = { }
     )
 }

@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -52,9 +50,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WeatherApp(viewModel: WeatherViewModel) {
-    var locationName by remember { mutableStateOf("") }
     val weatherDetails by viewModel.weatherDetails.observeAsState()
     val isLoading by viewModel.isLoading.observeAsState()
+    var isInputError by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -66,6 +64,9 @@ fun WeatherApp(viewModel: WeatherViewModel) {
                 viewModel.viewModelScope.launch {
                     viewModel.getWeatherDetails(locationName)
                 }
+            },
+            onInputError = {
+                isInputError = true
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
