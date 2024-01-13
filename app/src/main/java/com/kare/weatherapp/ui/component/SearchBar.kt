@@ -99,6 +99,7 @@ fun SearchBar(onSearch: (String) -> Unit, onInputError: () -> Unit) {
                     cursorColor = Color.Black,
                     unfocusedContainerColor = Color.Transparent,
                     focusedContainerColor = Color.Transparent,
+                    focusedTextColor = Color.Black
                 )
             )
         }

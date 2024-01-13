@@ -27,20 +27,17 @@ class WeatherViewModel : ViewModel() {
 
     suspend fun getWeatherDetails(location: String) {
         _isLoading.value = true
-            try {
-                val apiKey = "9ba82bf7644896ddbe0678eccc64089f"
-                val response = withContext(Dispatchers.IO) {
-                    weatherApiService.getWeather(location, apiKey)
-                }
-                _weatherDetails.value = response
-            } catch (e: Exception) {
-                println("Exception: $e")
-            } finally {
-                _isLoading.value = false
+        try {
+            val apiKey = "9ba82bf7644896ddbe0678eccc64089f"
+            val response = withContext(Dispatchers.IO) {
+                weatherApiService.getWeather(location, apiKey)
             }
-    }
-
-    fun resetLoadingState() {
-        _isLoading.value = false
+            _weatherDetails.value = response
+            println(response)
+        } catch (e: Exception) {
+            println("Exception: $e")
+        } finally {
+            _isLoading.value = false
+        }
     }
 }
