@@ -3,12 +3,9 @@ package com.kare.weatherapp.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.kare.weatherapp.data.WeatherDetails
+import com.kare.weatherapp.model.WeatherDetails
 import com.kare.weatherapp.network.WeatherApiService
-import com.kare.weatherapp.network.fetchWeatherDetails
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

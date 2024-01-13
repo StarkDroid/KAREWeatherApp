@@ -1,6 +1,6 @@
 package com.kare.weatherapp.network
 
-import com.kare.weatherapp.data.WeatherDetails
+import com.kare.weatherapp.model.WeatherDetails
 import retrofit2.http.GET
 import retrofit2.http.Query
 

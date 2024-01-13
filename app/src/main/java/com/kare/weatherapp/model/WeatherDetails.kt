@@ -1,4 +1,4 @@
-package com.kare.weatherapp.data
+package com.kare.weatherapp.model
 
 data class WeatherDetails(
     val name: String?,
