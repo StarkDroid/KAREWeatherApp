@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,6 +27,7 @@ import com.kare.weatherapp.R
 import com.kare.weatherapp.model.MainDetails
 import com.kare.weatherapp.model.WeatherCondition
 import com.kare.weatherapp.model.WeatherDetails
+import java.time.LocalTime
 
 @Composable
 fun WeatherCard(weatherDetails: WeatherDetails?) {
@@ -49,7 +51,7 @@ fun WeatherCard(weatherDetails: WeatherDetails?) {
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             val iconCode = weatherDetails?.weather?.firstOrNull()?.icon
             if (iconCode != null) {
@@ -62,20 +64,39 @@ fun WeatherCard(weatherDetails: WeatherDetails?) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Text(
                 "${weatherDetails?.main?.temp?.toInt() ?: stringResource(id = R.string.no_data)}°C",
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 100.sp)
             )
+
             Text(
                 "Feels like ${weatherDetails?.main?.feels_like?.toInt() ?: stringResource(id = R.string.no_data)} °C",
                 style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
                 modifier = Modifier
                     .offset(y = (-35).dp)
             )
+            
+            val greeting = getGreeting()
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = greeting,
+                style = MaterialTheme.typography.headlineSmall
+            )
         }
     }
+}
+
+fun getGreeting(): String {
+    val currentTime = LocalTime.now()
+    return when {
+        currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.NOON) -> "Good Morning"
+        currentTime.isAfter(LocalTime.NOON) && currentTime.isBefore(LocalTime.of(18, 0)) -> "Good Afternoon"
+        currentTime.isAfter(LocalTime.of(18,0)) && currentTime.isBefore(LocalTime.MIDNIGHT) -> "Good Evening"
+        else -> "Good Night"
+    }
+
 }
 
 fun getWeatherIconResourceId(iconCode: String): Int {
