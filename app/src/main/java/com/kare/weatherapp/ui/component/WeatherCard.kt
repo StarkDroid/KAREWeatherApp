@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
@@ -20,7 +21,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.kare.weatherapp.R
+import com.kare.weatherapp.model.MainDetails
 import com.kare.weatherapp.model.WeatherCondition
 import com.kare.weatherapp.model.WeatherDetails
 
@@ -46,7 +49,7 @@ fun WeatherCard(weatherDetails: WeatherDetails?) {
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             val iconCode = weatherDetails?.weather?.firstOrNull()?.icon
             if (iconCode != null) {
@@ -54,19 +57,22 @@ fun WeatherCard(weatherDetails: WeatherDetails?) {
                 Icon(
                     painter = painterResource(id = iconResourceId),
                     contentDescription = "Weather Icon",
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(180.dp),
                     tint = Color.Unspecified
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                "Temperature: ${weatherDetails?.main?.temp?.toInt() ?: stringResource(id = R.string.no_data)} °C",
+                "${weatherDetails?.main?.temp?.toInt() ?: stringResource(id = R.string.no_data)}°C",
+                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 100.sp)
             )
             Text(
                 "Feels like ${weatherDetails?.main?.feels_like?.toInt() ?: stringResource(id = R.string.no_data)} °C",
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
+                modifier = Modifier
+                    .offset(y = (-35).dp)
             )
         }
     }
@@ -92,7 +98,7 @@ fun getWeatherIconResourceId(iconCode: String): Int {
 fun WeatherCardPreview() {
     val dummyWeatherDetail = WeatherDetails(
         name = "Chennai",
-        main = null,
+        main = MainDetails(45.0, 40.0, 23.34,45.0,12,90),
         weather = listOf(WeatherCondition(description = "Partly cloudy", icon = "50n"))
     )
     WeatherCard(weatherDetails = dummyWeatherDetail)
