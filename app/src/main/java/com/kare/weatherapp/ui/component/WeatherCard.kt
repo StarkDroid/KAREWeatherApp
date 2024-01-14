@@ -1,5 +1,6 @@
 package com.kare.weatherapp.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +32,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @Composable
-fun WeatherCard(weatherDetails: WeatherDetails?) {
+fun WeatherCard(weatherDetails: WeatherDetails?, onClick: () -> Unit) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp
@@ -39,6 +40,7 @@ fun WeatherCard(weatherDetails: WeatherDetails?) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .clickable(onClick = onClick)
     ) {
         Column(
             modifier = Modifier
@@ -134,5 +136,5 @@ fun WeatherCardPreview() {
         main = MainDetails(45.0, 40.0, 23.34,45.0,12,90),
         weather = listOf(WeatherCondition(description = "Partly cloudy", icon = "50n"))
     )
-    WeatherCard(weatherDetails = dummyWeatherDetail)
+    WeatherCard(weatherDetails = dummyWeatherDetail, onClick = {})
 }

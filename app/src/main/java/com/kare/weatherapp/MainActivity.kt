@@ -11,8 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -24,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
+import com.kare.weatherapp.ui.component.BottomSheetContent
 import com.kare.weatherapp.ui.component.SearchBar
 import com.kare.weatherapp.ui.component.WeatherCard
 import com.kare.weatherapp.ui.theme.KAREWeatherAppTheme
@@ -48,11 +52,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherApp(viewModel: WeatherViewModel) {
     val weatherDetails by viewModel.weatherDetails.observeAsState()
     val isLoading by viewModel.isLoading.observeAsState()
     var isInputError by remember { mutableStateOf(false) }
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState()
 
     Column(
         modifier = Modifier
@@ -80,8 +87,24 @@ fun WeatherApp(viewModel: WeatherViewModel) {
             )
         } else {
             if (weatherDetails != null) {
-                WeatherCard(weatherDetails = weatherDetails)
+                WeatherCard(
+                    weatherDetails = weatherDetails,
+                    onClick = {
+                        showBottomSheet = true
+                    }
+                )
             }
+        }
+    }
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+            sheetState = sheetState
+        ) {
+            BottomSheetContent(weatherDetails = weatherDetails)
         }
     }
 
