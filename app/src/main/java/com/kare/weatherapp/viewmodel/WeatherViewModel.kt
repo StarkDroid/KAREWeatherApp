@@ -32,12 +32,21 @@ class WeatherViewModel : ViewModel() {
             val response = withContext(Dispatchers.IO) {
                 weatherApiService.getWeather(location, apiKey)
             }
-            _weatherDetails.value = response
-            println(response)
+            if (response.toString().isNotEmpty()) {
+                _weatherDetails.value = response
+            } else {
+               handleErrorResponse()
+            }
+            println("response: $response")
         } catch (e: Exception) {
+            handleErrorResponse()
             println("Exception: $e")
         } finally {
             _isLoading.value = false
         }
+    }
+
+    private fun handleErrorResponse() {
+        _weatherDetails.value = WeatherDetails.errorState()
     }
 }

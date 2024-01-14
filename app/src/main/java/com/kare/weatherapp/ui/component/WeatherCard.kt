@@ -47,51 +47,72 @@ fun WeatherCard(weatherDetails: WeatherDetails?, onClick: () -> Unit) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                weatherDetails?.name ?: stringResource(id = R.string.no_data),
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
-            )
+            if (weatherDetails != null && !weatherDetails.hasError()) {
 
-            Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    weatherDetails.name ?: stringResource(id = R.string.no_data),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
 
-            val iconCode = weatherDetails?.weather?.firstOrNull()?.icon
-            if (iconCode != null) {
-                val iconResourceId = getWeatherIconResourceId(iconCode)
+                Spacer(modifier = Modifier.height(20.dp))
+
+                val iconCode = weatherDetails.weather.firstOrNull()?.icon
+                if (iconCode != null) {
+                    val iconResourceId = getWeatherIconResourceId(iconCode)
+                    Icon(
+                        painter = painterResource(id = iconResourceId),
+                        contentDescription = "Weather Icon",
+                        modifier = Modifier.size(180.dp),
+                        tint = Color.Unspecified
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Text(
+                    "${weatherDetails.main?.temp?.toInt() ?: stringResource(id = R.string.no_data)}°C",
+                    style = MaterialTheme.typography.headlineLarge.copy(fontSize = 100.sp)
+                )
+
+                Text(
+                    "Feels like ${weatherDetails.main?.feels_like?.toInt() ?: stringResource(id = R.string.no_data)} °C",
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
+                    modifier = Modifier
+                        .offset(y = (-35).dp)
+                )
+
+                // Greeting with day of the week
+                val greeting = getGreeting()
+                val dayOfWeek = getDayOfWeek()
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = greeting,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+                Text(
+                    text = dayOfWeek,
+                    style = MaterialTheme.typography.headlineLarge
+                )
+            } else {
                 Icon(
-                    painter = painterResource(id = iconResourceId),
-                    contentDescription = "Weather Icon",
-                    modifier = Modifier.size(180.dp),
+                    painterResource(id = R.drawable.no_results_icon),
+                    contentDescription = "No result found",
+                    modifier = Modifier
+                        .size(180.dp)
+                        .align(Alignment.CenterHorizontally),
                     tint = Color.Unspecified
                 )
+
+                Text(
+                    text = "Sorry, No results found",
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .align(Alignment.CenterHorizontally),
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.headlineMedium
+                )
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                "${weatherDetails?.main?.temp?.toInt() ?: stringResource(id = R.string.no_data)}°C",
-                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 100.sp)
-            )
-
-            Text(
-                "Feels like ${weatherDetails?.main?.feels_like?.toInt() ?: stringResource(id = R.string.no_data)} °C",
-                style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
-                modifier = Modifier
-                    .offset(y = (-35).dp)
-            )
-
-            // Greeting with day of the week
-            val greeting = getGreeting()
-            val dayOfWeek = getDayOfWeek()
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = greeting,
-                style = MaterialTheme.typography.headlineSmall
-            )
-            Text(
-                text = dayOfWeek,
-                style = MaterialTheme.typography.headlineLarge
-            )
         }
     }
 }
