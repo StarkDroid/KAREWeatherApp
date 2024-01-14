@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -105,10 +104,10 @@ fun getDayOfWeek(): String {
 fun getGreeting(): String {
     val currentTime = LocalTime.now()
     return when {
-        currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.NOON) -> "Good Morning"
-        currentTime.isAfter(LocalTime.NOON) && currentTime.isBefore(LocalTime.of(18, 0)) -> "Good Afternoon"
-        currentTime.isAfter(LocalTime.of(18,0)) && currentTime.isBefore(LocalTime.MIDNIGHT) -> "Good Evening"
-        else -> "Good Night"
+        currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.NOON) -> "Good Morning,"
+        currentTime.isAfter(LocalTime.NOON) && currentTime.isBefore(LocalTime.of(18, 0)) -> "Good Afternoon,"
+        currentTime.isAfter(LocalTime.of(18,0)) && currentTime.isBefore(LocalTime.MIDNIGHT) -> "Good Evening,"
+        else -> "Good Night,"
     }
 
 }

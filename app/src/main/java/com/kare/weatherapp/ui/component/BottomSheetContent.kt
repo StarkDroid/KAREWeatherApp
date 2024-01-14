@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kare.weatherapp.R
 import com.kare.weatherapp.model.MainDetails
 import com.kare.weatherapp.model.WeatherCondition
 import com.kare.weatherapp.model.WeatherDetails
@@ -30,27 +31,31 @@ fun BottomSheetContent(weatherDetails: WeatherDetails?) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(vertical = 26.dp),
             ) {
-                Text(
-                    text = "Temp range: ${it.main?.temp_min?.toInt()}°C - ${it.main?.temp_max?.toInt()}°C",
-                    style = MaterialTheme.typography.bodyMedium
+                WeatherDetailItem(
+                    iconResId = R.drawable.temp_range,
+                    label = "Temp range",
+                    value = "${it.main?.temp_min?.toInt()}°C - ${it.main?.temp_max?.toInt()}°C"
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = "Pressure: ${it.main?.pressure} hPa",
-                    style = MaterialTheme.typography.bodyMedium
+                WeatherDetailItem(
+                    iconResId = R.drawable.pressure,
+                    label = "Pressure",
+                    value = "${it.main?.pressure} hPa"
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = "Humidity: ${it.main?.humidity}%",
-                    style = MaterialTheme.typography.bodyMedium
+                WeatherDetailItem(
+                    iconResId = R.drawable.humidity,
+                    label = "Humidity",
+                    value = "${it.main?.humidity}%"
                 )
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
