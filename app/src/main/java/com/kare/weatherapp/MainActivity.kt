@@ -90,6 +90,7 @@ fun WeatherApp(viewModel: WeatherViewModel) {
                 WeatherCard(
                     weatherDetails = weatherDetails,
                     onClick = {
+                        if (weatherDetails!!.hasError()) return@WeatherCard
                         showBottomSheet = true
                     }
                 )
@@ -107,7 +108,6 @@ fun WeatherApp(viewModel: WeatherViewModel) {
             BottomSheetContent(weatherDetails = weatherDetails)
         }
     }
-
 }
 
 @Composable
