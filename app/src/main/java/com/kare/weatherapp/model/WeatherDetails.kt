@@ -2,7 +2,8 @@ package com.kare.weatherapp.model
 
 data class WeatherDetails(
     val name: String?,
-    val main: MainDetails?
+    val main: MainDetails?,
+    val weather: List<WeatherCondition>
 )
 
 data class MainDetails (
@@ -13,3 +14,11 @@ data class MainDetails (
     val pressure: Int?,
     val humidity: Int?
 )
+
+data class WeatherCondition (
+    val description: String?,
+    val icon: String?
+)
+
+
+
