@@ -62,10 +62,10 @@ fun WeatherCard(weatherDetails: WeatherDetails?) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                "Temperature: ${weatherDetails?.main?.temp ?: stringResource(id = R.string.no_data)} °C",
+                "Temperature: ${weatherDetails?.main?.temp?.toInt() ?: stringResource(id = R.string.no_data)} °C",
             )
             Text(
-                "Feels like ${weatherDetails?.main?.feels_like ?: stringResource(id = R.string.no_data)} °C",
+                "Feels like ${weatherDetails?.main?.feels_like?.toInt() ?: stringResource(id = R.string.no_data)} °C",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
