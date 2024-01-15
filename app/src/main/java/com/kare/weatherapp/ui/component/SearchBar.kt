@@ -41,8 +41,7 @@ fun SearchBar(onSearch: (String) -> Unit, onInputError: () -> Unit) {
 
     Surface(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         shadowElevation = 12.dp
     ) {

@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +33,7 @@ import androidx.lifecycle.viewModelScope
 import com.kare.weatherapp.ui.component.BottomSheetContent
 import com.kare.weatherapp.ui.component.SearchBar
 import com.kare.weatherapp.ui.component.WeatherCard
+import com.kare.weatherapp.ui.component.WeeklyForecastItem
 import com.kare.weatherapp.ui.theme.KAREWeatherAppTheme
 import com.kare.weatherapp.viewmodel.WeatherViewModel
 import kotlinx.coroutines.launch
@@ -56,6 +60,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun WeatherApp(viewModel: WeatherViewModel) {
     val weatherDetails by viewModel.weatherDetails.observeAsState()
+    val weeklyForecast by viewModel.weeklyForecast.observeAsState()
     val isLoading by viewModel.isLoading.observeAsState()
     var isInputError by remember { mutableStateOf(false) }
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -70,13 +75,13 @@ fun WeatherApp(viewModel: WeatherViewModel) {
             onSearch = { locationName ->
                 viewModel.viewModelScope.launch {
                     viewModel.getWeatherDetails(locationName)
+                    viewModel.getWeeklyForecast(locationName)
                 }
             },
             onInputError = {
                 isInputError = true
             }
         )
-        Spacer(modifier = Modifier.height(16.dp))
 
         if (isLoading == true) {
             CircularProgressIndicator(
@@ -94,6 +99,16 @@ fun WeatherApp(viewModel: WeatherViewModel) {
                         showBottomSheet = true
                     }
                 )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+
+                LazyRow {
+                    items(weeklyForecast?.list.orEmpty()) { weeklyForecastItem ->
+                        WeeklyForecastItem(
+                            forecastItem = weeklyForecastItem
+                        )
+                    }
+                }
             }
         }
     }

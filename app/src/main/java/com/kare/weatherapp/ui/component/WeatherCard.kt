@@ -38,7 +38,7 @@ fun WeatherCard(weatherDetails: WeatherDetails?, onClick: () -> Unit) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(vertical = 16.dp)
             .clickable(onClick = onClick)
     ) {
         Column(
