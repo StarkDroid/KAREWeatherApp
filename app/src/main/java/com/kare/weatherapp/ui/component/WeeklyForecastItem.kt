@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kare.weatherapp.R
+import com.kare.weatherapp.model.MainDetails
 import com.kare.weatherapp.model.WeeklyWeatherForecast
 
 @Composable
@@ -61,4 +63,17 @@ fun WeeklyForecastItem(
             )
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun WeeklyForecastItemPreview() {
+    WeeklyForecastItem(
+        forecastItem = WeeklyWeatherForecast(
+            main = MainDetails(
+                25.0, 26.0, 24.0, 26.0, 1013, 71
+            ),
+            weather = listOf()
+        )
+    )
 }
