@@ -75,7 +75,6 @@ fun WeatherApp(viewModel: WeatherViewModel) {
             onSearch = { locationName ->
                 viewModel.viewModelScope.launch {
                     viewModel.getWeatherDetails(locationName)
-                    viewModel.getWeeklyForecast(locationName)
                 }
             },
             onInputError = {

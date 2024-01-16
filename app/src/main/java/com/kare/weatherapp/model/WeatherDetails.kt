@@ -31,5 +31,21 @@ data class WeatherCondition (
     val icon: String?
 )
 
+data class WeeklyWeatherDetails(
+    val list: List<WeeklyWeatherForecast>,
+    val error: Boolean = false
+) {
+    companion object {
+        fun errorState(): WeeklyWeatherDetails {
+            return WeeklyWeatherDetails(emptyList(), error = true)
+        }
+    }
+}
+
+data class WeeklyWeatherForecast(
+    val main: MainDetails,
+    val weather: List<WeatherCondition>
+)
+
 
 

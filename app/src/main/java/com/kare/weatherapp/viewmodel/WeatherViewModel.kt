@@ -34,12 +34,18 @@ class WeatherViewModel : ViewModel() {
     suspend fun getWeatherDetails(location: String) {
         _isLoading.value = true
         try {
-            val response = withContext(Dispatchers.IO) {
-                weatherApiService.getWeather(location, apiKey)
+            val currentWeatherResponse = withContext(Dispatchers.IO) {
+                weatherApiService.getCurrentWeather(location, apiKey)
             }
-            if (response.toString().isNotEmpty()) {
-                _weatherDetails.value = response.body()
-                println("CurrentWeatherResponse: $response")
+            val weeklyWeatherResponse = withContext(Dispatchers.IO) {
+                weatherApiService.getWeeklyForecast(location, apiKey)
+            }
+
+            if (currentWeatherResponse.isSuccessful && weeklyWeatherResponse.isSuccessful) {
+                _weatherDetails.value = currentWeatherResponse.body()
+                _weeklyForecast.value = weeklyWeatherResponse.body()
+                println("CurrentWeatherResponse: $currentWeatherResponse")
+                println("WeeklyWeatherResponse: $weeklyWeatherResponse")
             } else {
                handleErrorResponse()
             }
@@ -51,25 +57,8 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
-    suspend fun getWeeklyForecast(location: String) {
-        _isLoading.value = true
-        try {
-            val response = withContext(Dispatchers.IO) {
-                weatherApiService.getWeeklyForecast(location, apiKey)
-            }
-
-            if (response.isSuccessful) {
-                _weeklyForecast.value = response.body()
-                println("WeeklyWeatherResponse: ${response}")
-            }
-        } catch (e:Exception) {
-            println("Exception: $e")
-        } finally {
-            _isLoading.value = false
-        }
-    }
-
     private fun handleErrorResponse() {
         _weatherDetails.value = WeatherDetails.errorState()
+        _weeklyForecast.value = WeeklyWeatherDetails.errorState()
     }
 }
