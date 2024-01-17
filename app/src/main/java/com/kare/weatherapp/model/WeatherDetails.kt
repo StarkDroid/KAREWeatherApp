@@ -44,7 +44,8 @@ data class WeeklyWeatherDetails(
 
 data class WeeklyWeatherForecast(
     val main: MainDetails,
-    val weather: List<WeatherCondition>
+    val weather: List<WeatherCondition>,
+    val dt_txt: String
 )
 
 

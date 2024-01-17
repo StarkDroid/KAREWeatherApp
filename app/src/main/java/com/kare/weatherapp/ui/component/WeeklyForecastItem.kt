@@ -1,6 +1,5 @@
 package com.kare.weatherapp.ui.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,9 +18,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kare.weatherapp.R
 import com.kare.weatherapp.model.MainDetails
 import com.kare.weatherapp.model.WeeklyWeatherForecast
+import com.kare.weatherapp.utils.getDayfromDate
+import com.kare.weatherapp.utils.getWeatherIconResourceId
 
 @Composable
 fun WeeklyForecastItem(
@@ -38,26 +39,30 @@ fun WeeklyForecastItem(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Display the date, assuming it's available in your WeeklyForecastItem
-            Text(
-                text = "${forecastItem.main.pressure ?: R.string.no_data}",
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
-            )
+            val dayOfWeek = getDayfromDate(forecastItem.dt_txt)
+            if (dayOfWeek != null) {
+                Text(
+                    text = dayOfWeek,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+            }
 
-            // Display the weather icon (assuming you have icons available)
-            Image(
-                painter = painterResource(id = R.drawable.few_clouds), // Replace with your actual weather icon
-                contentDescription = null,
-                modifier = Modifier
-                    .size(50.dp)
-                    .padding(4.dp)
-            )
+            val iconCode = forecastItem.weather.firstOrNull()?.icon
+            if (iconCode != null) {
+                Icon(
+                    painter = painterResource(getWeatherIconResourceId(iconCode)),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .padding(4.dp),
+                    tint = Color.Unspecified
+                )
+            }
 
-            // Display the temperature
             Text(
-                text = "${forecastItem.main.temp?.toInt()}°C", // Assuming temperature is a Double
+                text = "${forecastItem.main.temp?.toInt()}°C",
                 color = Color.White,
                 fontSize = 16.sp
             )
@@ -73,7 +78,8 @@ fun WeeklyForecastItemPreview() {
             main = MainDetails(
                 25.0, 26.0, 24.0, 26.0, 1013, 71
             ),
-            weather = listOf()
+            weather = listOf(),
+            dt_txt = "2024-01-16 00:00:00"
         )
     )
 }

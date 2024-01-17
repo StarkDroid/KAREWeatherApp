@@ -27,11 +27,7 @@ import com.kare.weatherapp.R
 import com.kare.weatherapp.model.MainDetails
 import com.kare.weatherapp.model.WeatherCondition
 import com.kare.weatherapp.model.WeatherDetails
-import com.kare.weatherapp.utils.getDayOfWeek
-import com.kare.weatherapp.utils.getGreeting
 import com.kare.weatherapp.utils.getWeatherIconResourceId
-import java.time.LocalDate
-import java.time.LocalTime
 
 @Composable
 fun WeatherCard(weatherDetails: WeatherDetails?, onClick: () -> Unit) {
@@ -85,18 +81,6 @@ fun WeatherCard(weatherDetails: WeatherDetails?, onClick: () -> Unit) {
                         .offset(y = (-35).dp)
                 )
 
-                // Greeting with day of the week
-                val greeting = getGreeting()
-                val dayOfWeek = getDayOfWeek()
-                Spacer(modifier = Modifier.height(20.dp))
-                Text(
-                    text = greeting,
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Text(
-                    text = dayOfWeek,
-                    style = MaterialTheme.typography.headlineLarge
-                )
             } else {
                 Icon(
                     painterResource(id = R.drawable.no_results_icon),

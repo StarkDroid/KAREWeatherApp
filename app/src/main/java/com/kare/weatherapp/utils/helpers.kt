@@ -1,12 +1,23 @@
 package com.kare.weatherapp.utils
 
 import com.kare.weatherapp.R
-import java.time.LocalDate
+import java.text.SimpleDateFormat
 import java.time.LocalTime
+import java.util.Calendar
+import java.util.Locale
 
-fun getDayOfWeek(): String {
-    val currentDayOfWeek = LocalDate.now().dayOfWeek
-    return currentDayOfWeek.toString()
+fun getDayfromDate(dateString: String): String? {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    val date = dateFormat.parse(dateString)
+
+    date?.let {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+
+        return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault())
+    }
+
+    return ""
 }
 
 fun getGreeting(): String {
