@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kare.weatherapp.model.WeatherDetails
 import com.kare.weatherapp.model.WeeklyWeatherDetails
+import com.kare.weatherapp.model.WeeklyWeatherForecast
 import com.kare.weatherapp.network.WeatherApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -55,6 +56,11 @@ class WeatherViewModel : ViewModel() {
         } finally {
             _isLoading.value = false
         }
+    }
+
+    fun extractDailyForecast(): List<WeeklyWeatherForecast> {
+        return _weeklyForecast.value?.list.orEmpty()
+            .filterIndexed { index, _ -> index % 8 == 0 }
     }
 
     private fun handleErrorResponse() {

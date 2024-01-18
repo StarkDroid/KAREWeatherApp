@@ -59,7 +59,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun WeatherApp(viewModel: WeatherViewModel) {
     val weatherDetails by viewModel.weatherDetails.observeAsState()
-    val weeklyForecast by viewModel.weeklyForecast.observeAsState()
     val isLoading by viewModel.isLoading.observeAsState()
     var isInputError by remember { mutableStateOf(false) }
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -101,7 +100,7 @@ fun WeatherApp(viewModel: WeatherViewModel) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 LazyRow {
-                    items(weeklyForecast?.list.orEmpty()) { weeklyForecastItem ->
+                    items(viewModel.extractDailyForecast()) { weeklyForecastItem ->
                         WeeklyForecastItem(
                             forecastItem = weeklyForecastItem
                         )

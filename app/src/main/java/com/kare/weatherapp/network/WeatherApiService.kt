@@ -19,7 +19,6 @@ interface WeatherApiService {
     suspend fun getWeeklyForecast(
         @Query("q") location: String,
         @Query("appid") apiKey: String,
-        @Query("cnt") days: Int = 7,
         @Query("units") units: String = "metric"
     ): Response<WeeklyWeatherDetails>
 }
