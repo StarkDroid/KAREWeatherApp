@@ -1,12 +1,13 @@
 package com.kare.weatherapp.ui.component
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,22 +29,23 @@ fun WeeklyForecastItem(
     forecastItem: WeeklyWeatherForecast,
     modifier: Modifier = Modifier
 ) {
-    Box(
+
+    Card(
         modifier = modifier
             .width(120.dp)
-            .height(150.dp)
-            .background(Color.Gray)
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
+            .height(120.dp)
+            .padding(horizontal = 8.dp)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             val dayOfWeek = getDayfromDate(forecastItem.dt_txt)
             if (dayOfWeek != null) {
                 Text(
                     text = dayOfWeek,
-                    color = Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp
                 )
@@ -56,14 +58,14 @@ fun WeeklyForecastItem(
                     contentDescription = null,
                     modifier = Modifier
                         .size(50.dp)
-                        .padding(4.dp),
+                        .padding(4.dp)
+                        .align(Alignment.CenterHorizontally),
                     tint = Color.Unspecified
                 )
             }
 
             Text(
                 text = "${forecastItem.main.temp?.toInt()}°C",
-                color = Color.White,
                 fontSize = 16.sp
             )
         }
