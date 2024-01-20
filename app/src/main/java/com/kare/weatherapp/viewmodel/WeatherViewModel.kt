@@ -12,13 +12,12 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class WeatherViewModel : ViewModel() {
+class  WeatherViewModel : ViewModel() {
 
     private val _weatherDetails = MutableLiveData<WeatherDetails>()
     val weatherDetails: LiveData<WeatherDetails> = _weatherDetails
 
     private val _weeklyForecast = MutableLiveData<WeeklyWeatherDetails>()
-    val weeklyForecast: LiveData<WeeklyWeatherDetails> = _weeklyForecast
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
